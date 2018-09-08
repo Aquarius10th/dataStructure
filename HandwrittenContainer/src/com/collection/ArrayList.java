@@ -1,73 +1,157 @@
 package com.collection;
 
+public class ArrayList<T> implements List<T> {
+    // 已保存的元素个数
+    private int size;
+    // 用于保存元素
+    private Object[] objects;
 
-
-public class ArrayList<T> implements List<T>{
-
-    private int size;//默认容量大小
-
-    private Object[] objs = new Object[size];
     /**
      * 空构造器，默认情况下初始化的ArrayList集合中
      * 包含长度为16的数组长度
      */
-    public ArrayList(){
-
+    public ArrayList() {
+        this(16);
     }
 
     /**
      * 初始化指定长度数组的ArrayList集合
      */
-    public ArrayList(int initialCapacity){
-
+    public ArrayList(int initialCapacity) {
+        objects = new Object[initialCapacity];
     }
-
 
     @Override
     public int size() {
-        return -1;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
     public boolean contains(T t) {
+        for (int i = 0; i < size; ++i) {
+            Object object = objects[i];
+            if (t == object) {
+                return true;
+            }
+            if (t != null && t.equals(object)) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean add(T t) {
-        return false;
+        return add(t, size);
     }
 
     @Override
     public boolean add(T t, int index) {
-        return false;
+        checkRange(index, size);
+
+        if (size == objects.length) {
+            expand();
+        }
+
+        for (int i = size; i > index; --i) {
+            objects[i] = objects[i - 1];
+        }
+        objects[index] = t;
+
+        ++size; // 每增加1个元素，size自增1
+        return true;
     }
 
     @Override
     public T remove(int index) {
-        return null;
+        checkRange(index, size - 1);
+        Object removedElem = objects[index];
+        for (int i = index; i < size; ++i) {
+            objects[i] = objects[i + 1];
+        }
+        objects[size - 1] = null;
+
+        --size; // 每移除1个元素，size自减1
+        return (T) removedElem;
     }
 
     @Override
     public T get(int index) {
-        return null;
+        checkRange(index, size - 1);
+        return (T) objects[index];
     }
 
     @Override
     public T set(int index, T t) {
-        return null;
+        checkRange(index, size - 1);
+
+        Object oldElem = objects[index];
+        objects[index] = t;
+        return (T) oldElem;
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
+    public Iterator<T> iterator() {
+        Iterator<T> iterator = new Iterator<T>() {
+            // 游标，当前遍历的元素的位置
+            int cursor = -1;
+
+            @Override
+            public boolean hasNext() {
+                // 每次调用hasNext()，都令游标向后移动一位
+                // 如果移动后的游标没有越界，说明还有下一个元素
+                return ++cursor < size;
+            }
+
+            @Override
+            public T next() {
+                // 获取当前游标指向的元素
+                return (T) objects[cursor];
+            }
+        };
+        return iterator;
     }
 
+    /**
+     * 扩容
+     */
+    private void expand() {
+        int newCapacity = (int) (objects.length * 1.75);
+        Object[] objects2 = new Object[newCapacity];
+        for (int i = 0, len = objects.length; i < len; ++i) {
+            objects2[i] = objects[i];
+            objects[i] = null;
+        }
+        objects = objects2;
+    }
 
+    // 检查给定的下标是否在[0, maxIndex]之内
+    private void checkRange(int index, int maxIndex) {
+        if (index < 0 || index > maxIndex) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
 
+    @Override
+    public void clear() {
+        size = 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(getClass().getSimpleName() + "[");
+        for (int i = 0; i < size; ++i) {
+            stringBuilder.append(objects[i]);
+            if (i != size - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append(']');
+        return stringBuilder.toString();
+    }
 }

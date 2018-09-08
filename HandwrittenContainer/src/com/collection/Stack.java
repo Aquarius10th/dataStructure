@@ -5,53 +5,61 @@ package com.collection;
  */
 public class Stack<T> {
 
-
     //使用自己编写的ArrayList
-    private ArrayList<T> elementDatas = new ArrayList<>();
+    private ArrayList<T> objects = new ArrayList<>();
 
     /**
      * 往栈中添加一个元素
-     * @param t
-     * @return
      */
     public T push(T t){
-        return null;
+        objects.add(t, 0);
+        return t;
     }
 
     /**
      * 栈中弹出一个元素 弹出栈顶的元素
-     * @return
      */
     public T pop(){
-        return null;
+        return objects.remove(0);
     }
 
     /**
      * 从栈中弹出第一个元素 栈顶元素
-     * @return
      */
     public T peek(){
-        return null;
+        return objects.get(0);
     }
 
 
     /**
      * 查看当前栈中是否存在元素
-     * @return
      */
     public boolean empty() {
-        return false;
+        return objects.isEmpty();
     }
 
     /**
      * 查询栈中是否存在t元素
-     * @param t
-     * @return
+     * @return 如果元素存在，返回该元素相对于栈顶的索引（从0开始）；否则返回-1
      */
     public int search(T t) {
+        int i = 0;
+        Iterator<T> iterator = objects.iterator();
+        while (iterator.hasNext()) {
+            T obj = iterator.next();
+            if (t == obj) {
+                return i;
+            }
+            if (t != null && t.equals(obj)) {
+                return i;
+            }
+            ++i;
+        }
         return -1;
     }
 
-
-
+    @Override
+    public String toString() {
+        return objects.toString().replace(objects.getClass().getSimpleName(), getClass().getSimpleName());
+    }
 }

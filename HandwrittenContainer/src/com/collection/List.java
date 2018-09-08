@@ -25,7 +25,6 @@ public interface List<T> {
      */
     boolean contains(T t);
 
-
     /**
      * 往集合中添加元素
      * @param t 要添加的元素
@@ -40,7 +39,7 @@ public interface List<T> {
      * @param index 要添加的索引
      * @return 如果添加成功true 添加失败false
      */
-    boolean add(T t,int index);
+    boolean add(T t, int index);
 
 
     /**
@@ -50,6 +49,10 @@ public interface List<T> {
      */
     T remove(int index);
 
+    /**
+     * 清空容器
+     */
+    void clear();
 
     /**
      * 从集合中获取指定索引的元素
@@ -64,13 +67,13 @@ public interface List<T> {
      * @param t 要设置的值
      * @return 覆盖掉的值
      */
-    T set(int index,T t);
+    T set(int index, T t);
 
 
     /**
      * 获取迭代器
      * @return 返回对应的迭代器
      */
-    Iterator iterator();
+    Iterator<T> iterator();
 
 }
