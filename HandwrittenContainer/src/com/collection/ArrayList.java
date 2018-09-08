@@ -54,6 +54,7 @@ public class ArrayList<T> implements List<T> {
     public boolean add(T t, int index) {
         checkRange(index, size);
 
+        // 当元素个数达到上限时，进行扩容
         if (size == objects.length) {
             expand();
         }
@@ -118,14 +119,14 @@ public class ArrayList<T> implements List<T> {
     }
 
     /**
-     * 扩容
+     * 扩容：创建新数组，将原数组的内容复制到新数组中
      */
     private void expand() {
-        int newCapacity = (int) (objects.length * 1.75);
+        int newCapacity = objects.length * 2;
         Object[] objects2 = new Object[newCapacity];
         for (int i = 0, len = objects.length; i < len; ++i) {
             objects2[i] = objects[i];
-            objects[i] = null;
+            objects[i] = null; // 手动解除多余的对象引用
         }
         objects = objects2;
     }

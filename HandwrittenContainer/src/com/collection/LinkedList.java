@@ -210,9 +210,6 @@ public class LinkedList<T> implements List<T> {
         T data;//节点存储数据
         Node<T> next;// 下一个节点的引用
 
-        Node() {
-        }
-
         Node(T t) {
             this.data = t;
         }
